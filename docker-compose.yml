@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  project1:
+    build: .
+    volumes:
+      - ./project1:/usr/src/app
+    working_dir: /usr/src/app
+    command: python -m flask run --host=0.0.0.0
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+
+  project2:
+    build: .
+    volumes:
+      - ./project2:/usr/src/app
+    working_dir: /usr/src/app
+    command: python main.py
+
+  project3:
+    build: .
+    volumes:
+      - ./project3:/usr/src/app
+    working_dir: /usr/src/app
+    command: python script.py
+
+  dev:
+    build: .
+    volumes:
+      - ./:/usr/src/app
+    working_dir: /usr/src/app
+    command: tail -f /dev/null
