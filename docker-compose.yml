@@ -10,6 +10,9 @@ services:
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
 
   project2:
     build: .
@@ -17,6 +20,10 @@ services:
       - ./project2:/usr/src/app
     working_dir: /usr/src/app
     command: python main.py
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
 
   project3:
     build: .
@@ -24,6 +31,10 @@ services:
       - ./project3:/usr/src/app
     working_dir: /usr/src/app
     command: python script.py
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mydatabase
+    depends_on:
+      - mongo
 
   dev:
     build: .
@@ -31,3 +42,13 @@ services:
       - ./:/usr/src/app
     working_dir: /usr/src/app
     command: tail -f /dev/null
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
